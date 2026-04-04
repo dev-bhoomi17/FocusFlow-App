@@ -411,7 +411,7 @@ const App = () => {
     };
     const generateJourneySteps = async (topic) => {
         // 1. IMPORTANT: Paste your sk-or-v1-... key here
-        const OPENROUTER_KEY = "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";
+        const OPENROUTER_KEY = "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</div>";
 
         try {
             const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -519,7 +519,7 @@ const App = () => {
             const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
                 method: "POST",
                 headers: {
-                    "Authorization": "Bearer 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", // your key
+                    "Authorization": "Bearer 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</div>", // your key
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
@@ -594,7 +594,7 @@ const App = () => {
             const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
                 method: "POST",
                 headers: {
-                    "Authorization": "Bearer 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",
+                    "Authorization": "Bearer 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</div>",
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
