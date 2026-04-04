@@ -417,14 +417,13 @@ const App = () => {
             const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
                 method: "POST",
                 headers: {
-                    "Authorization": `Bearer ${OPENROUTER_KEY}`,
+                    "Authorization": "Bearer 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",
                     "Content-Type": "application/json",
-                    // Required by OpenRouter for free models
                     "HTTP-Referer": window.location.origin,
-                    "X-Title": "FocusFlow Project"
+                    "X-Title": "FocusFlow"
                 },
                 body: JSON.stringify({
-                    "model": "openrouter/auto",
+                    "model": "openai/gpt-3.5-turbo",
                     "messages": [
                         {
                             "role": "user",
@@ -458,6 +457,11 @@ const App = () => {
             });
 
             if (!response.ok) {
+                throw new Error(`API Error: ${response.status}`);
+            }
+            if (!response.ok) {
+                const errorText = await response.text();
+                console.error("FULL API ERROR:", errorText);
                 throw new Error(`API Error: ${response.status}`);
             }
 
@@ -525,7 +529,7 @@ const App = () => {
                     "X-Title": "FocusFlow Project"
                 },
                 body: JSON.stringify({
-                    model: "openrouter/auto",
+                    model: "openai/gpt-3.5-turbo",
                     messages: [
                         {
                             role: "system",
@@ -597,10 +601,12 @@ const App = () => {
                 method: "POST",
                 headers: {
                     "Authorization": "Bearer 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",
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": window.location.origin,
+                    "X-Title": "FocusFlow"
                 },
                 body: JSON.stringify({
-                    model: "openrouter/auto",
+                    model: "openai/gpt-3.5-turbo",
                     messages: [{ role: "user", content: prompt }]
                 })
             });
