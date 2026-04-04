@@ -411,7 +411,7 @@ const App = () => {
     };
     const generateJourneySteps = async (topic) => {
         // 1. IMPORTANT: Paste your sk-or-v1-... key here
-        const OPENROUTER_KEY = "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</div>";
+        const OPENROUTER_KEY = "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";
 
         try {
             const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
@@ -519,8 +519,10 @@ const App = () => {
             const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
                 method: "POST",
                 headers: {
-                    "Authorization": "Bearer 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</div>", // your key
-                    "Content-Type": "application/json"
+                    "Authorization": "Bearer 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",
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": window.location.origin,
+                    "X-Title": "FocusFlow Project"
                 },
                 body: JSON.stringify({
                     model: "openrouter/auto",
@@ -594,7 +596,7 @@ const App = () => {
             const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
                 method: "POST",
                 headers: {
-                    "Authorization": "Bearer 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</div>",
+                    "Authorization": "Bearer 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",
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
