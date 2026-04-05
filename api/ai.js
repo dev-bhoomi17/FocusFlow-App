@@ -1,4 +1,4 @@
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
@@ -17,10 +17,6 @@ module.exports = async function handler(req, res) {
         messages: [{ role: "user", content: message }]
       })
     });
-
-    if (!response.ok) {
-      return res.status(response.status).json({ error: "OpenRouter error" });
-    }
 
     const data = await response.json();
     res.status(200).json(data);
