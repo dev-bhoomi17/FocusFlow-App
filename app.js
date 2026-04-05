@@ -445,9 +445,12 @@ const App = () => {
                 return parsed.map(step => ({
                     title: step.title || step,
                     subtasks: step.subtasks || [],
-                    resource: step.resource && step.resource.startsWith("http")
-                        ? step.resource
-                        : `https://www.youtube.com/results?search_query=${encodeURIComponent(step.title + " tutorial")}`
+                    resource:
+                        step.resource &&
+                            step.resource.startsWith("http") &&
+                            !step.resource.includes("undefined")
+                            ? step.resource
+                            : `https://www.youtube.com/results?search_query=${encodeURIComponent(step.title + " tutorial")}`
                 }));
 
             } catch (e) {
