@@ -10,7 +10,9 @@ export default async function handler(req, res) {
       method: "POST",
       headers: {
         "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "HTTP-Referer": "https://focus-flow-app-mauve.vercel.app",
+        "X-Title": "FocusFlow App"
       },
       body: JSON.stringify({
         model: "mistralai/mistral-7b-instruct",
@@ -19,6 +21,7 @@ export default async function handler(req, res) {
     });
 
     const data = await response.json();
+    console.log("OPENROUTER RAW:", data);
 
     return res.status(200).json(data);
 
