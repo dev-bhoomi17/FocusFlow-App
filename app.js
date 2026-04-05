@@ -445,12 +445,7 @@ const App = () => {
                 return parsed.map(step => ({
                     title: step.title || step,
                     subtasks: step.subtasks || [],
-                    resource:
-                        step.resource &&
-                            step.resource.startsWith("http") &&
-                            !step.resource.includes("undefined")
-                            ? step.resource
-                            : `https://www.youtube.com/results?search_query=${encodeURIComponent(step.title + " tutorial")}`
+                    resource: `https://www.youtube.com/results?search_query=${encodeURIComponent(step.title + " tutorial")}`
                 }));
 
             } catch (e) {
@@ -918,6 +913,7 @@ Make it inspiring and confident.
                                                                                 <a
                                                                                     href={t.resource}
                                                                                     target="_blank"
+                                                                                    rel="noopener noreferrer"
                                                                                     className="text-xs text-[#66C5CC] hover:underline mt-1"
                                                                                 >
                                                                                     🔗 Learn more
