@@ -410,62 +410,18 @@ const App = () => {
         }
     };
     const generateJourneySteps = async (topic) => {
-        // 1. IMPORTANT: Paste your sk-or-v1-... key here
-        const OPENROUTER_KEY = "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";
-
         try {
-            const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+            const res = await fetch("/api/ai", {
                 method: "POST",
                 headers: {
-                    "Authorization": "Bearer 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",
-                    "Content-Type": "application/json",
-                    "HTTP-Referer": window.location.origin,
-                    "X-Title": "FocusFlow"
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    "model": "openai/gpt-3.5-turbo",
-                    "messages": [
-                        {
-                            "role": "user",
-                            content: `
-                                    Create a structured learning plan for "${topic}".
-
-                                    Rules:
-                                    - Give 5-10 main steps
-                                    - Each step should be SHORT (max 6-8 words)
-                                    - Each step must have 2-3 sub-steps
-                                    - Sub-steps must be very short (action based)
-
-                                    - Each step MUST include a real, working learning resource link
-                                    - Only use trusted sources:
-                                      YouTube, freeCodeCamp, W3Schools, MDN
-                                    - Do NOT generate fake or broken links
-
-                                    Return ONLY JSON in this format:
-
-                                    [
-                                      {
-                                        "title": "Step title",
-                                        "subtasks": ["Subtask 1", "Subtask 2"],
-                                        "resource": "https://example.com"
-                                      },
-                                    ]
-                                    `
-                        }
-                    ]
+                    message: `Create a step-by-step learning plan for ${topic} in JSON format`
                 })
             });
 
-            if (!response.ok) {
-                throw new Error(`API Error: ${response.status}`);
-            }
-            if (!response.ok) {
-                const errorText = await response.text();
-                console.error("FULL API ERROR:", errorText);
-                throw new Error(`API Error: ${response.status}`);
-            }
-
-            const data = await response.json();
+            const data = await res.json();
 
             // Safety check: ensure the AI actually returned a message
             if (data.choices && data.choices[0] && data.choices[0].message) {
@@ -520,26 +476,13 @@ const App = () => {
 
     const sendChatToAI = async (message) => {
         try {
-            const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+            const res = await fetch("/api/ai", {
                 method: "POST",
                 headers: {
-                    "Authorization": "Bearer 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",
-                    "Content-Type": "application/json",
-                    "HTTP-Referer": window.location.origin,
-                    "X-Title": "FocusFlow Project"
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    model: "openai/gpt-3.5-turbo",
-                    messages: [
-                        {
-                            role: "system",
-                            content: "You are a helpful productivity AI. Keep answers short and motivating."
-                        },
-                        {
-                            role: "user",
-                            content: message
-                        }
-                    ]
+                    message: message
                 })
             });
 
@@ -597,17 +540,13 @@ const App = () => {
     `;
 
         try {
-            const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+            const res = await fetch("/api/ai", {
                 method: "POST",
                 headers: {
-                    "Authorization": "Bearer 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",
-                    "Content-Type": "application/json",
-                    "HTTP-Referer": window.location.origin,
-                    "X-Title": "FocusFlow"
+                    "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    model: "openai/gpt-3.5-turbo",
-                    messages: [{ role: "user", content: prompt }]
+                    message: prompt
                 })
             });
 
