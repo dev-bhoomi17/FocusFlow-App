@@ -5,6 +5,7 @@ export default async function handler(req, res) {
 
   try {
     const { message, type } = req.body;
+    let prompt = "";
     if (type === "journey") {
       prompt = `
     Create a step-by-step learning roadmap for: ${message}
@@ -34,6 +35,9 @@ export default async function handler(req, res) {
     }
 
     else if (type === "summary") {
+      prompt = message;
+    }
+    if (!prompt) {
       prompt = message;
     }
 
