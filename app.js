@@ -416,13 +416,16 @@ const App = () => {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ message: topic }) // ✅ FIXED
+                body: JSON.stringify({
+                    message: topic,
+                    type: "journey"
+                }) // ✅ FIXED
             });
 
             const data = await res.json();
 
             console.log("FULL AI RESPONSE:", data);
-            alert(JSON.stringify(data));
+
 
             const aiText = data?.choices?.[0]?.message?.content;
 
@@ -442,7 +445,9 @@ const App = () => {
                 return parsed.map(step => ({
                     title: step.title || step,
                     subtasks: step.subtasks || [],
-                    resource: `https://www.youtube.com/results?search_query=${encodeURIComponent(step.title + " tutorial")}`
+                    resource: step.resource && step.resource.startsWith("http")
+                        ? step.resource
+                        : `https://www.youtube.com/results?search_query=${encodeURIComponent(step.title + " tutorial")}`
                 }));
 
             } catch (e) {
@@ -485,7 +490,8 @@ const App = () => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    message: message
+                    message: message,
+                    type: "chat"
                 })
             });
 
@@ -550,7 +556,8 @@ Make it inspiring and confident.
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    message: prompt
+                    message: prompt,
+                    type: "summary"
                 })
             });
 

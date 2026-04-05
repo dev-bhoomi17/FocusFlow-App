@@ -4,8 +4,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { message } = req.body;
-    const prompt = `
+    const { message, type } = req.body;
+    if (type === "journey") {
+      prompt = `
     Create a step-by-step learning roadmap for: ${message}
     Rules:
     - Give 5-10 main steps
@@ -27,6 +28,14 @@ export default async function handler(req, res) {
           },
       ]
 `;
+    }
+    else if (type === "chat") {
+      prompt = message;
+    }
+
+    else if (type === "summary") {
+      prompt = message;
+    }
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
