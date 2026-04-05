@@ -442,9 +442,7 @@ const App = () => {
                 return parsed.map(step => ({
                     title: step.title || step,
                     subtasks: step.subtasks || [],
-                    resource: step.resource && step.resource.startsWith("http")
-                        ? step.resource
-                        : `https://www.youtube.com/results?search_query=${step.title} tutorial`
+                    resource: `https://www.youtube.com/results?search_query=${encodeURIComponent(step.title + " tutorial")}`
                 }));
 
             } catch (e) {
@@ -492,7 +490,7 @@ const App = () => {
             });
 
             const data = await res.json();
-            return data.choices?.[0]?.message?.content || "No response";
+            return data?.choices?.[0]?.message?.content?.trim() || "⚠️ AI failed";
         } catch (err) {
             console.error(err);
             return "Error ⚠️";
@@ -541,7 +539,8 @@ const App = () => {
     Completion: ${stats.pct}%
     Streak: ${stats.streaksCount}
 
-    Write 2 lines personality summary motivational.
+    Write a powerful 2-line motivational summary about this user's discipline and growth.
+Make it inspiring and confident.
     `;
 
         try {

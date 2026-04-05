@@ -5,6 +5,28 @@ export default async function handler(req, res) {
 
   try {
     const { message } = req.body;
+    const prompt = `
+    Create a step-by-step learning roadmap for: ${message}
+    Rules:
+    - Give 5-10 main steps
+    - Each step should be SHORT (max 6-8 words)
+    - Each step must have 2-3 sub-steps
+    - Sub-steps must be very short (action based)
+
+    - Each step MUST include a real, working learning resource link
+    - Only use trusted sources:
+      YouTube, freeCodeCamp, W3Schools, MDN
+    - Do NOT generate fake or broken links
+
+      Return ONLY JSON in this format:
+      [
+          {
+            "title": "Step title",
+            "subtasks": ["Subtask 1", "Subtask 2"],
+            "resource": "https://example.com"
+          },
+      ]
+`;
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
@@ -16,7 +38,7 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: "openai/gpt-3.5-turbo",
-        messages: [{ role: "user", content: message }]
+        messages: [{ role: "user", content: prompt }]
       })
     });
 
