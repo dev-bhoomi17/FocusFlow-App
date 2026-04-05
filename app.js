@@ -482,7 +482,7 @@ const App = () => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    message: message
+                    message: prompt
                 })
             });
 
