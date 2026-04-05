@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     Rules:
     - Give 5-10 main steps
     - Each step should be SHORT (max 6-8 words)
-    - Each step must have 2-3 sub-steps
+    - Each step must have 3-4 sub-steps
     - Sub-steps must be very short (action based)
 
     - Each step MUST include a real, working learning resource link
