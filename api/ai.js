@@ -18,6 +18,12 @@ export default async function handler(req, res) {
       })
     });
 
+    // ✅ IMPORTANT FIX
+    if (!response.ok) {
+      const err = await response.text();
+      return res.status(response.status).json({ error: err });
+    }
+
     const data = await response.json();
     res.status(200).json(data);
 
