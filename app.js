@@ -422,6 +422,7 @@ const App = () => {
             const data = await res.json();
 
             console.log("FULL AI RESPONSE:", data);
+            alert(JSON.stringify(data));
 
             const aiText = data?.choices?.[0]?.message?.content;
 
