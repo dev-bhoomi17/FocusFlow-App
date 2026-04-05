@@ -416,49 +416,53 @@ const App = () => {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({
-                    message: `Create a step-by-step learning plan for ${topic} in JSON format`
-                })
+                body: JSON.stringify({ message: topic }) // ✅ FIXED
             });
 
             const data = await res.json();
 
-            // Safety check: ensure the AI actually returned a message
-            if (data.choices && data.choices[0] && data.choices[0].message) {
-                const aiText = data.choices[0].message.content;
+            console.log("FULL AI RESPONSE:", data);
 
-                if (!aiText) throw new Error("Empty AI response");
+            const aiText = data?.choices?.[0]?.message?.content;
 
-                let cleanText = aiText.replace(/```json|```/g, "").trim();
+            if (!aiText) {
+                throw new Error("No AI response");
+            }
 
-                try {
-                    const parsed = JSON.parse(cleanText);
+            console.log("AI TEXT:", aiText);
 
-                    return parsed.map(step => ({
-                        title: step.title || step,
-                        subtasks: step.subtasks || [],
-                        resource: step.resource && step.resource.startsWith("http")
-                            ? step.resource
-                            : `https://www.youtube.com/results?search_query=${step.title} tutorial`
+            // 🔥 CLEAN + FLEXIBLE PARSING
+            let cleanText = aiText.replace(/```json|```/g, "").trim();
+
+            try {
+                // ✅ Try JSON format first
+                const parsed = JSON.parse(cleanText);
+
+                return parsed.map(step => ({
+                    title: step.title || step,
+                    subtasks: step.subtasks || [],
+                    resource: step.resource && step.resource.startsWith("http")
+                        ? step.resource
+                        : `https://www.youtube.com/results?search_query=${step.title} tutorial`
+                }));
+
+            } catch (e) {
+                console.warn("AI returned plain text, converting...");
+
+                // ✅ Fallback: convert text → structured steps
+                return cleanText
+                    .split("\n")
+                    .filter(line => line.trim() !== "")
+                    .map(line => ({
+                        title: line.replace(/^Step\s*\d+:\s*/i, "").trim(),
+                        subtasks: [],
+                        resource: ""
                     }));
-                } catch (e) {
-                    console.warn("AI did not return JSON, converting manually...");
-
-                    // Convert plain text → array
-                    const steps = cleanText
-                        .split("\n")
-                        .filter(line => line.trim() !== "")
-                        .map(line => line.replace(/^Step\s*\d+:\s*/i, "").trim());
-
-                    return steps;
-                }
-            } else {
-                throw new Error("Empty response from AI");
             }
 
         } catch (error) {
-            console.error("AI failed, using backup steps:", error);
-            // This backup ensures your 'I WANT LEARN HTML' card always has content
+            console.error("AI failed, using backup:", error);
+
             return [
                 {
                     title: "Fundamentals of " + topic,
